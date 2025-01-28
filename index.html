@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Grade Calculator</title>
+    <style>
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 20px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Heading styling */
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+
+        h2 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+
+        /* Result text styling */
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            background-color: #eaf8ea;
+            padding: 10px;
+            border: 1px solid #4CAF50;
+            border-radius: 5px;
+            color: #2e7d32;
+        }
+
+        /* Marks list styling */
+        .marks p {
+            background-color: #f9f9f9;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Course Grade Calculator</h1>
+    <div id="output"></div>
+    <script>
+        // Step 1: Ask the user for the number of courses
+        let numOfCourses;
+        do {
+            numOfCourses = prompt("How many courses did you finish?", "0");
+            numOfCourses = parseInt(numOfCourses);
+        } while (isNaN(numOfCourses) || numOfCourses <= 0);
+
+        // Step 2: Declare an empty array for course marks
+        let courseMarks = [];
+
+        // Step 3: Loop to get course marks
+        for (let i = 1; i <= numOfCourses; i++) {
+            let mark;
+            let validMark = false; // Flag to check if the mark is valid
+            while (!validMark) {
+                mark = prompt("Enter your mark for course " + i);
+                mark = parseFloat(mark); // Convert to float
+
+                // Validate the mark
+                if (!isNaN(mark) && mark >= 0 && mark <= 100) {
+                    courseMarks.push(mark); // Add the mark to the array
+                    validMark = true; // Mark is valid, exit the loop
+                } else {
+                    document.getElementById("output").innerHTML += "<p>Invalid mark for course " + i + "!</p>";
+                }
+            }
+        }
+
+        // Calculate the average
+        let total = 0;
+        for (let j = 0; j < courseMarks.length; j++) {
+            total += courseMarks[j];
+        }
+        let average = total / courseMarks.length;
+
+        // Round the average to 2 decimal points
+        average = Math.round(average * 100) / 100;
+
+        // Determine the grade based on the average
+        let gradeMessage;
+        if (average >= 90 && average <= 100) {
+            gradeMessage = "Your final average is " + average + ". Your grade is A+";
+        } else if (average >= 80 && average < 90) {
+            gradeMessage = "Your final average is " + average + ". Your grade is B";
+        } else if (average >= 70 && average < 80) {
+            gradeMessage = "Your final average is " + average + ". Your grade is C";
+        } else if (average >= 60 && average < 70) {
+            gradeMessage = "Your final average is " + average + ". Your grade is D";
+        } else if (average >= 0 && average < 60) {
+            gradeMessage = "Your final average is " + average + ". Your grade is F";
+        } else {
+            gradeMessage = "Sorry, all the marks have to be from minimum 0 to maximum 100!";
+        }
+
+        // Display the marks for each course
+        let marksMessage = "<h2>Marks Entered:</h2><div class='marks'>";
+        for (let i = 0; i < courseMarks.length; i++) {
+            marksMessage += `<p>Course ${i + 1}: ${courseMarks[i]}</p>`;
+        }
+        marksMessage += "</div>";
+
+        // Output the marks, average, and grade
+        document.getElementById("output").innerHTML += marksMessage;
+        document.getElementById("output").innerHTML += "<p class='result'>" + gradeMessage + "</p>";
+    </script>
+</body>
+</html>
